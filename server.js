@@ -1,8 +1,25 @@
 const express = require("express");
+const config = require("config")
+const startDebugger = require("debug")("app:startup")
+const dbDebugger = require("debug")("app:db")
 const app = express();
 const Joi = require("joi");
 
+app.set('view engine', "pug");
+app.set('views', "./views");
+
+app.get("/", function (req, res) {
+  res.render("index", {pageTitle: "Node.js Training", youAreUsingPug: true})
+})
+
 app.use(express.json());
+app.use(express.urlencoded ({ extended: true }))
+app.use(express.static("public"))
+
+app.use(function(req, res, next) {
+    console.log('log....')
+    next()
+})
 
 const todos = [
   {
